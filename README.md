@@ -4,20 +4,32 @@ This repository contains a small ingestion / exploration starter for the Book-Cr
 
 ## Understanding the Dataset
 
-Source: [Book-Crossing dataset on Kaggle](https://www.kaggle.com/datasets/somnambwl/bookcrossing-dataset?select=Books.csv)
-
-| Entity | Count | Notes |
-|---|---|---|
-| Users | 278,858 | anonymized with demographic fields |
-| Books | 271,379 | titles in the dataset |
-| Ratings | 1,149,780 | explicit and implicit ratings |
+Source: [Book-Crossing dataset on Kaggle](https://www.kaggle.com/datasets/syedjaferk/book-crossing-dataset?select=BX-Books.csv)
 
 ![Database schema](imgs/db_schema.png)
 
-Note: Since this project currently focuses on the core user-book-rating relationships and book metadata, it does not include the following optional dataset features:
+## Data exploration key observations
+- `notebooks/exploration.ipynb` verifies raw data quality and schema issues before preprocessing
+- Key observations: 
+    - Book metadata needs cleanup: missing authors/publishers, bad years
+    - Users require age/country normalization
+    - Ratings are sparse and long-tailed, with many implicit zeros
 
-- anonymized user location fields
-- book image URLs for small/medium/large cover images
+
+## Storage (DuckDB and intermediate parquet files)
+
+- Raw CSVs are loaded from `data/raw/` into DuckDB at `database/books.duckdb` via `src/data/ingest.py`
+- Clean tables are built with `src/data/preprocess.py`:
+  - `books_clean`
+  - `users_clean`
+  - `ratings_clean`
+- Cleaned tables are exported as Parquet files into `data/processed/`
+
+![Data storage and preprocessing](imgs/data.png)
+
+Resources:
+[DuckDB Python installation](https://duckdb.org/install/?platform=macos&environment=python)
+
 
 ## References and Acknowledgements
 
