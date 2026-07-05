@@ -5,8 +5,7 @@ class PopularityRecommender:
     def __init__(self):
         self.recommendations = None
 
-    def fit(self, ratings: pd.DataFrame , books: pd.DataFrame):
-        MIN_RATINGS = 50
+    def fit(self, ratings: pd.DataFrame , books: pd.DataFrame, min_ratings: int = 50):
         
         # here we calculate number and average of ratings for each book
         consider_books = (
@@ -18,9 +17,9 @@ class PopularityRecommender:
             .reset_index()
         )
 
-        # filter out books with less than MIN_RATINGS ratings to remove noise.
+        # filter out books with less than min_ratings ratings to remove noise.
         # e.g. book with (no_rating=100 && avg_rating=4.8) is better than book with (no_rating=1 && avg_rating=5.0)
-        consider_books = consider_books[consider_books["Number_of_Ratings"] >= MIN_RATINGS]
+        consider_books = consider_books[consider_books["Number_of_Ratings"] >= min_ratings]
 
         # merge with books to get book titles and other info
         consider_books = consider_books.merge(
