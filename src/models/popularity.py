@@ -21,10 +21,10 @@ class PopularityRecommender:
         # e.g. book with (no_rating=100 && avg_rating=4.8) is better than book with (no_rating=1 && avg_rating=5.0)
         consider_books = consider_books[consider_books["Number_of_Ratings"] >= min_ratings]
 
-        # merge with books to get book titles and other info
+        # merge (this temp ratings dataset) with books to get book titles and other info
         consider_books = consider_books.merge(
             books,
-            how="left",
+            how="inner",    # inner join makes sure books without info is not included.
             on="ISBN"
         )
 

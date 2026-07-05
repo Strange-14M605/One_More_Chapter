@@ -5,3 +5,5 @@ pandas
 matplotlib
 duckdb
 pyarrow
+uvicorn
+fastapi

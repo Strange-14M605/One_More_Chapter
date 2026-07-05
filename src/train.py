@@ -21,5 +21,5 @@ metrics = evaluator.evaluate(
     books=books
 )
 
-evaluator.display(metrics, model.recommendations)
+evaluator.display(metrics)
 evaluator.save(metrics, "artifacts/baseline_metrics.json")
