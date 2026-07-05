@@ -1,3 +1,7 @@
 data/raw/*
 data/processed/*
 database/*
+artifacts/*
+
+__pycache__/
+.DS_Store
