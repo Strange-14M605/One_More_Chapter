@@ -6,6 +6,10 @@ This repository contains a small ingestion / exploration starter for the Book-Cr
 
 Source: [Book-Crossing dataset on Kaggle](https://www.kaggle.com/datasets/syedjaferk/book-crossing-dataset?select=BX-Books.csv)
 
+BookCrossing is a platform where books are registered and then passed on from person to person- sometimes after the user gives it a rating. Here, we will deal with 3 tables: Books, Users and Ratings and try to recommend books using different algorithms like popularity based, collaborative filtering, content based filtering and I will even attempt a hybrid model. 
+
+Note: This is real-world data and comes with complexities and lose-ends.
+
 ![Database schema](imgs/db_schema.png)
 
 ## Data exploration key observations
@@ -29,6 +33,11 @@ Source: [Book-Crossing dataset on Kaggle](https://www.kaggle.com/datasets/syedja
 
 Resources:
 [DuckDB Python installation](https://duckdb.org/install/?platform=macos&environment=python)
+
+## FastAPI endpoint
+
+Serve recommended books on an endpoint by runnign this command:
+` uvicorn src.api.app:app --reload ` and then going to `http://127.0.0.1:8000/recommend/popular`
 
 
 ## References and Acknowledgements
