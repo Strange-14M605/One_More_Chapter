@@ -1,0 +1,9 @@
+kaggle
+jupyter
+ipykernel
+pandas
+matplotlib
+duckdb
+pyarrow
+uvicorn
+fastapi
