@@ -7,3 +7,4 @@ duckdb
 pyarrow
 uvicorn
 fastapi
+apache-airflow
