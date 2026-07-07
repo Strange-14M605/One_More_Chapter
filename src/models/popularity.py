@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-path = "artifacts/models/popularity/recommendations.parquet"
+path = "artifacts/models/popularity/v1/recommendations.parquet"
 
 def fit(ratings: pd.DataFrame , books: pd.DataFrame, min_ratings: int = 50):
     
@@ -38,9 +38,3 @@ def fit(ratings: pd.DataFrame , books: pd.DataFrame, min_ratings: int = 50):
 
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     recommendations.to_parquet(path, index=False)
-
-def recommend(self, n=10):
-    return self.recommendations.head(n)
-
-def load(self, path: str):
-    self.recommendations = pd.read_parquet(path)

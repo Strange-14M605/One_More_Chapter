@@ -2,7 +2,7 @@ import json
 import pandas as pd
 from pathlib import Path
 
-metrics_path = Path("artifacts/models/popularity/metrics.json")
+metrics_path = Path("artifacts/models/popularity/v1/metrics.json")
 
 
 def evaluate(books: pd.DataFrame) -> dict:
@@ -46,7 +46,7 @@ def evaluate_coverage(
     }
 
 def load_recommendations():
-    return pd.read_parquet(Path("artifacts/models/popularity/recommendations.parquet"))
+    return pd.read_parquet(Path("artifacts/models/popularity/v1/recommendations.parquet"))
 
 def display(metrics: dict):
     print("\n========== EVALUATION ==========\n")
