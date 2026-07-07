@@ -36,14 +36,3 @@ def create_table(table_name: str, csv_path: Path):
     """)
 
     con.unregister("temp_df")
-
-def main():
-    print("Loading tables into DuckDB...")
-    create_table("books", project_root / "data/raw/BX-Books.csv")
-    create_table("users", project_root / "data/raw/BX-Users.csv")
-    create_table("ratings", project_root / "data/raw/BX-Book-Ratings.csv")
-
-    con.sql("SHOW TABLES").show()
-
-if __name__ == "__main__":
-    main()
