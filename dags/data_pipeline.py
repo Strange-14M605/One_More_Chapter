@@ -31,6 +31,19 @@ sys.path.insert(0, str(project_root))
 )
 
 def data_pipeline():
+
+    @task 
+    def check_raw_data():
+        # check if the raw files exists, if not, download from kaggle
+        from data.load_source_data import get_raw_data
+        raw_dir = project_root / "data" / "raw"
+        if (
+            not (raw_dir / "BX-Books.csv").exists()
+            or not (raw_dir / "BX-Users.csv").exists()
+            or not (raw_dir / "BX-Book-Ratings.csv").exists()
+        ):
+            get_raw_data()
+
     @task
     def load_raw_tables():
         from src.data.ingest import create_table
@@ -45,10 +58,11 @@ def data_pipeline():
         preprocess_users()
         preprocess_ratings()
 
+        # optional saving (as parquet files) for reference/later use/cross-team usages
         export_parquet("books_clean")
         export_parquet("users_clean")
         export_parquet("ratings_clean")
 
-    load_raw_tables() >> clean_tables()
+    check_raw_data() >> load_raw_tables() >> clean_tables()
 
 data_pipeline()
