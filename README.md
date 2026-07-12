@@ -61,6 +61,9 @@ Note: Start FastAPI app by running this command:
 
 ![Airflow pipelines](imgs/pipelines.png)
 
+Note: just use `chmod +x start_airflow.sh` and `./start_airflow.sh` to set the airflow hom, dag root and start sirflow standalone. Then go to `http://localhost:8080` and enter username and pw from `airflow/simple_auth_manager_passwords.json.generated`
+- You can set `load_examples = False` in `airflow/airflow.cfg` to show only your dags.
+
 ## Note to self
 
 Ideas to make the next project stronger:

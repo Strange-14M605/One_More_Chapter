@@ -62,7 +62,13 @@ def data_pipeline():
         export_parquet("books_clean")
         export_parquet("users_clean")
         export_parquet("ratings_clean")
+    
+    @task
+    def validate_data():
+        from src.data.validation import run_validation
 
-    check_raw_data() >> load_raw_tables() >> clean_tables()
+        run_validation()
+
+    check_raw_data() >> load_raw_tables() >> clean_tables() >> validate_data()
 
 data_pipeline()

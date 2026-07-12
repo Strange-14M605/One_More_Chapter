@@ -8,3 +8,5 @@ pyarrow
 uvicorn
 fastapi
 apache-airflow
+great-expectations
+great-expectations
