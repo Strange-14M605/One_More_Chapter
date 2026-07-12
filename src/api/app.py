@@ -1,8 +1,5 @@
 from fastapi import FastAPI
-from src.models.popularity import PopularityRecommender
-
-model = PopularityRecommender()
-model.load("artifacts/popularity.parquet")
+from src.deployment.service import recommend
 
 app = FastAPI()
 
@@ -10,7 +7,7 @@ app = FastAPI()
 def root():
     return {"message": "Welcome to One More Chapter!"}
 
-@app.get("/recommend/popular")
+@app.get("/recommend/")
 def recommend_popular(top_k: int = 10):
-    recommendations = model.recommend(top_k)
+    recommendations = recommend(top_k)
     return recommendations.to_dict(orient="records")

@@ -3,5 +3,7 @@ data/processed/*
 database/*
 artifacts/*
 
+/airflow
+
 __pycache__/
 .DS_Store

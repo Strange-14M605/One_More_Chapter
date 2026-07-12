@@ -65,7 +65,6 @@ def preprocess_users():
     print(f"Users   : {raw:,} → {clean:,}")
 
 
-
 def preprocess_ratings():
     """
     Cleaned ratings table:
@@ -92,7 +91,10 @@ def preprocess_ratings():
     print(f"Ratings : {raw:,} → {clean:,}")
 
 def export_parquet(table_name):
-    output = project_root / "data" / "processed" / f"{table_name}.parquet"
+    output_dir = project_root / "data" / "processed"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    output = output_dir / f"{table_name}.parquet"
 
     con.execute(f"""
         COPY {table_name}
@@ -101,18 +103,3 @@ def export_parquet(table_name):
     """)
 
     print(f"Exported {table_name} → {output.name}")
-
-
-def main():
-    preprocess_books()
-    preprocess_users()
-    preprocess_ratings()
-
-    export_parquet("books_clean")
-    export_parquet("users_clean")
-    export_parquet("ratings_clean")
-
-    print("✅ Preprocessing complete.")
-
-if __name__ == "__main__":
-    main()

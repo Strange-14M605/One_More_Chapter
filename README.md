@@ -1,18 +1,30 @@
 # One More Chapter
 
-This repository contains a small ingestion / exploration starter for the Book-Crossing dataset from the Book-Crossing community. The goal is to prepare the dataset for recommendation, analysis, and modeling, while keeping the pipeline simple and reproducible.
+This is a mini project using the Book-Crossing Dataset to create a minimal data, training and deployment pipeline. 
+
+Overview of technologies used: **Pandas, DuckDB, SQL, Airflow, FastAPI**
+
+#### Go to:
+- [Understanding the Dataset](#understanding-the-dataset)
+- [Data exploration](#data-exploration)
+- [Storage (DuckDB and intermediate parquet files)](#storage-duckdb-and-intermediate-parquet-files)
+- [Great expectations](#great-expectations)
+- [FastAPI endpoint](#fastapi-endpoint)
+- [Airflow Pipelines](#airflow-pipelines)
+- [Note to self](#note-to-self)
+- [References and Acknowledgements](#references-and-acknowledgements)
 
 ## Understanding the Dataset
 
 Source: [Book-Crossing dataset on Kaggle](https://www.kaggle.com/datasets/syedjaferk/book-crossing-dataset?select=BX-Books.csv)
 
-BookCrossing is a platform where books are registered and then passed on from person to person- sometimes after the user gives it a rating. Here, we will deal with 3 tables: Books, Users and Ratings and try to recommend books using different algorithms like popularity based, collaborative filtering, content based filtering and I will even attempt a hybrid model. 
+BookCrossing is a platform where books are registered and then passed on from person to person- sometimes after the user gives it a rating. Here, we will deal with 3 tables: Books, Users and Ratings and try to recommend books , using a simple popularity algorithm.
 
-Note: This is real-world data and comes with complexities and lose-ends.
+Note: This is real-world data and comes with missing, mismatched and wrong data.
 
 ![Database schema](imgs/db_schema.png)
 
-## Data exploration key observations
+## Data exploration
 - `notebooks/exploration.ipynb` verifies raw data quality and schema issues before preprocessing
 - Key observations: 
     - Book metadata needs cleanup: missing authors/publishers, bad years
@@ -27,18 +39,56 @@ Note: This is real-world data and comes with complexities and lose-ends.
   - `books_clean`
   - `users_clean`
   - `ratings_clean`
-- Cleaned tables are exported as Parquet files into `data/processed/`
-
-![Data storage and preprocessing](imgs/data.png)
+- Cleaned tables are exported as Parquet files into `data/processed/` for backup/ inter team usage.
 
 Resources:
 [DuckDB Python installation](https://duckdb.org/install/?platform=macos&environment=python)
 
+## Great expectations
+
+The cleaned datasets are validated for basic data quality (missing values, uniqueness, and valid ranges) before the pipeline continues.
+
+![GX](imgs/gx.png)
+
+Resources:
+[Great expectations learning documentation](https://docs.greatexpectations.io/docs/reference/learn/)
+
 ## FastAPI endpoint
 
-Serve recommended books on an endpoint by runnign this command:
-` uvicorn src.api.app:app --reload ` and then going to `http://127.0.0.1:8000/recommend/popular`
+Serve recommended books on this endpoint:
+`$/recommend/popular`
 
+Note: Start FastAPI app by running this command:
+` uvicorn src.api.app:app --reload ` and then going to `http://127.0.0.1:8000/recommend/popular` for recommendations.
+
+## Airflow Pipelines
+
+1. **Data processing pipeline** : ensures raw data exists, ingests raw data and processed/cleaned data into DuckDB.
+
+2. **Training Pipeline** : uses processed/cleaned data from DuckDB to train and evaluate(basic) a model. Produces `artifacts/../recommendations.parquet` that is used by FastAPI.
+
+3. **Deployment Pipeline** : updates the model served by the endpoint in production.
+
+![Airflow pipelines](imgs/pipelines.png)
+
+![Data pipeline](imgs/dag.png)
+
+Note: just use `chmod +x start_airflow.sh` and `./start_airflow.sh` to set the airflow hom, dag root and start sirflow standalone. Then go to `http://localhost:8080` and enter username and pw from `airflow/simple_auth_manager_passwords.json.generated`
+- You can set `load_examples = False` in `airflow/airflow.cfg` to show only your dags.
+
+## Note to self
+
+Ideas to make the next project stronger:
+
+- Choose a dataset with richer features so I can perform deeper EDA, discover meaningful correlations, and engineer better features.
+- Spend more time defining the ML problem before writing code (success metrics, assumptions, evaluation strategy, and expected users).
+- Separate the project into clear data, feature, training, evaluation, serving, and monitoring layers from the beginning.
+- Add automated data validation (Great Expectations) before preprocessing instead of relying on manual notebook checks.
+- Build reproducible experiments using MLflow with proper parameter, metric, and artifact tracking.
+- Create a feature store (Feast) to separate feature engineering from model training and ensure training-serving consistency.
+- Add automated tests (unit, integration, and smoke tests) for pipelines and API endpoints.
+- Add monitoring for data quality, model performance, and API latency to simulate a production system.
+- Document architecture decisions and trade-offs as the project evolves rather than only documenting the final implementation.
 
 ## References and Acknowledgements
 
