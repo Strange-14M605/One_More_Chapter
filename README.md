@@ -8,6 +8,7 @@ Overview of technologies used: **Pandas, DuckDB, SQL, Airflow, FastAPI**
 - [Understanding the Dataset](#understanding-the-dataset)
 - [Data exploration](#data-exploration)
 - [Storage (DuckDB and intermediate parquet files)](#storage-duckdb-and-intermediate-parquet-files)
+- [Great expectations](#great-expectations)
 - [FastAPI endpoint](#fastapi-endpoint)
 - [Airflow Pipelines](#airflow-pipelines)
 - [Note to self](#note-to-self)
@@ -43,6 +44,15 @@ Note: This is real-world data and comes with missing, mismatched and wrong data.
 Resources:
 [DuckDB Python installation](https://duckdb.org/install/?platform=macos&environment=python)
 
+## Great expectations
+
+The cleaned datasets are validated for basic data quality (missing values, uniqueness, and valid ranges) before the pipeline continues.
+
+![GX](imgs/gx.png)
+
+Resources:
+[Great expectations learning documentation](https://docs.greatexpectations.io/docs/reference/learn/)
+
 ## FastAPI endpoint
 
 Serve recommended books on this endpoint:
@@ -60,6 +70,8 @@ Note: Start FastAPI app by running this command:
 3. **Deployment Pipeline** : updates the model served by the endpoint in production.
 
 ![Airflow pipelines](imgs/pipelines.png)
+
+![Data pipeline](imgs/dag.png)
 
 Note: just use `chmod +x start_airflow.sh` and `./start_airflow.sh` to set the airflow hom, dag root and start sirflow standalone. Then go to `http://localhost:8080` and enter username and pw from `airflow/simple_auth_manager_passwords.json.generated`
 - You can set `load_examples = False` in `airflow/airflow.cfg` to show only your dags.
